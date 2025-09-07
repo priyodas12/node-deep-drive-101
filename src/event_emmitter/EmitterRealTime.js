@@ -2,12 +2,16 @@ import {EventEmitter} from "events";
 
 const footballNewsEmitter = new EventEmitter();
 
+const map = new Map();
+
+
 // create a listener
 const footballFan = function (message) {
     console.log(`${message} : broadcasting started at: ${new Date()}`);
-    setInterval(() => {
+    const intv = setInterval((message) => {
         console.log(`${message} : enjoying live streaming at: ${new Date()}`);
     }, 2000);
+    map.set("ESPN", intv);
 };
 
 // 📌 .on(event, listener) → subscribes a listener to an event.
@@ -19,4 +23,9 @@ footballNewsEmitter.on("ESPN", footballFan);
 footballNewsEmitter.emit("ESPN", "Match: India vs Brazil");
 
 //📌 .removeListener(event, listener) or .off() → stops listening.
-footballNewsEmitter.removeListener("ESPN", footballFan);
+setTimeout(() => {
+    footballNewsEmitter.removeListener("ESPN", footballFan);
+    clearInterval(map.get("ESPN"));
+    console.log("livestreaming stopped");
+}, 10000);
+
