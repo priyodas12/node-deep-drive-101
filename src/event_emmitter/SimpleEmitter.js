@@ -35,3 +35,20 @@ emitter.emit("event-a");
 emitter.emit("event-b");
 emitter.emit("event-c", uuidv4(), uuidv4());
 emitter.emit("event-cb", uuidv4(), uuidv4());
+
+//consumes only once
+let m = 0;
+emitter.once("event-d", () => {
+    console.log(++m);
+});
+
+emitter.emit("event-d",); // valid
+emitter.emit("event-d",); // ignored
+
+
+//error events
+const emitter2 = new EventEmitter();
+emitter2.on("error", (err) => {
+    console.error("whoops! there was an error");
+});
+emitter2.emit("error", new Error("whoops!"));
