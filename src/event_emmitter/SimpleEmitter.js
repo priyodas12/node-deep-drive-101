@@ -1,4 +1,5 @@
 import {EventEmitter} from "events";
+import {v4 as uuidv4} from "uuid";
 
 //It’s a broadcast — every subscribed listener gets the event.
 //EventEmitter = Pub/Sub → all listeners on an event get notified.
@@ -8,17 +9,18 @@ import {EventEmitter} from "events";
 
 const emitter = new EventEmitter();
 
-emitter.on("channel a", () => {
-    console.log("consuming...", "genric-a", Date.now());
+emitter.on("event-a", () => {
+    console.log("listener-1: consuming...", Date.now());
 });
 
-emitter.on("channel a", () => {
-    console.log("consuming...", "generic-b", Date.now());
+emitter.on("event-b", () => {
+    console.log("listener-2: consuming...", Date.now());
 });
 
-emitter.on("channel a", (msg) => {
-    console.log("consuming...", msg);
+emitter.on("event-c", (msg) => {
+    console.log("listener-3: consuming...", msg);
 });
 
-emitter.emit("channel a");
-emitter.emit("channel a", "something");
+emitter.emit("event-a");
+emitter.emit("event-b");
+emitter.emit("event-c", uuidv4());
